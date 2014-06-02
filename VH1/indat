@@ -1,8 +1,8 @@
 &hinput
  rstrt   = 'no'
- prefix  = 'sedov'
+ prefix  = 'supernova'
  ncycend = 50000
- ndump   = 5000000
+ ndump   = 500
  nprin   = 500
  nmovie  = 1000000
  endtime = 9.9e+19

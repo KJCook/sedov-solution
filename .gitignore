@@ -1,3 +1,4 @@
 *.o
 *~
 *vh1-starter
+VH1/output/*

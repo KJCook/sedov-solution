@@ -46,12 +46,13 @@ CHARACTER(len=4) :: tmp1
 CHARACTER(len=50):: hstfile
 CHARACTER(len=50):: filename
 
-INTEGER :: ncycend, nprin, nmovie, ndump, imax, n
+INTEGER :: ncycend, nprin, nmovie, ndump, imax, n, nghost
 REAL :: endtime, tprin, tmovie, dxfac, xmin, xmax, ridt, xvel, dt3, dtx
 
 ! ADDITIONAL VARIABLES NEEDED FOR CURRENT SIMULATION (Sedov Blast)
 INTEGER :: nmid
-REAL :: pleft, dleft, Eblast, volume
+REAL :: pambient, dampient, Ebomb, volume
+REAL :: rho, pressure, rlast
 
 NAMELIST / hinput / rstrt, prefix, ncycend, ndump, nprin, nmovie, endtime, tprin, tmovie
 
@@ -78,49 +79,49 @@ write (8,*)
 sweep  = 'x'   ! default is x-sweep (only option for 1D)
 ngeom  = 2     ! Spherical Geom
 nleft  = 0     ! Reflecting at xmin
-nright = 1     ! Reflecting at xmax
+nright = 1     ! Zero-gradient at xmax
+
+!============================================================
+! INITIAL CONDITIONS AND GRID
+!============================================================
 
 ! Create a grid of imax zones, making room for 6 'ghost zones' on each end
 
-imax = 100           ! total number of real zones on grid
-nmin = 7             ! first real zone
-nmax = imax + 6      ! last real zone
-xmin = 0.            ! x value at left edge of grid
-xmax = 1.0           ! x value at right edge of grid
+nghost = 7           ! number of ghost zones on either side of the simulation grid
+open(unit=1,file="../laneEmbden.dat")
 
-! Initialize grid coordinates: xa0(n) is coordinate of left edge of zone n
+read (1,*) imax
+print *, imax
+nmin = nghost + 1
+nmax = imax + nghost
 
-dxfac = (xmax - xmin) / float(imax)  ! width of each zone
-do n = nmin, nmax
-  xa0(n) = xmin + (n-nmin)*dxfac 
-  dx0(n) = dxfac
-enddo
+n = nmin
+rlast = 0;
+5 read (1,*,end=10) radius, rho, pressure
+ xa0(n) = (radius + rlast) / 2.0
+ if (n-1.gt.0) then 
+   dx0(n-1) = xa(n)-xa(n-1)
+ end if
+ if (n.gt.nghost .and. n.le.nmax-nghost) then
+    print *, rho,pressure
+    r(n) = rho
+    p(n) = pressure
+    u(n) = 0.0            ! velocity is zero everywhere
+    v(n) = 0.0            ! note that we have to carry around the transverse
+    w(n) = 0.0            ! velocities even though this is a 1D code
+    f(n) = 0.0            ! set initial flattening to zero
+    rlast = radius
+ end if
+ n = n+1
+go to 5
+dx0(nmax) = dx0(nmax-1)
 
-!============================================================
-! INITIAL CONDITIONS
+10 close(1)
 
-! Set up parameters for the problem; in this case a Sedov Blast
- 
-pleft  = 1.0e-04 ! initial pressure across the grid
-dleft  = 1.0     ! initial density across the grid
+! Set up parameters for the problem; in this case a Sedov Blast 
 gam    = 5.0/3.0   ! We always need a ratio of specific heats, gamma
-Eblast = 10.0   ! initial Energy of the blast
 gamm   = gam - 1.0 
-
-! initialize grid for Sod shock problem:
-
-
-do n = nmin, nmax      ! left half of grid has density, pressure given by dleft, pleft
- r(n) = dleft
- p(n) = pleft
- u(n) = 0.0            ! velocity is zero everywhere
- v(n) = 0.0            ! note that we have to carry around the transverse
- w(n) = 0.0            ! velocities even though this is a 1D code
- f(n) = 0.0            ! set initial flattening to zero
-enddo
-volume = (4.0/3.0)*3.14159*xa0(nmin+1)**3
-p(nmin) = gamm*Eblast/volume
-! got rid of separate right half of grid initialization
+Ebomb = 10.0   ! initial Energy of the blast
 
 ! Write out initial data to a file
 nfile = 0
