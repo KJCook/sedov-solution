@@ -87,7 +87,7 @@ nright = 1     ! Zero-gradient at xmax
 
 ! Create a grid of imax zones, making room for 6 'ghost zones' on each end
 
-nghost = 7           ! number of ghost zones on either side of the simulation grid
+nghost = 6           ! number of ghost zones on either side of the simulation grid
 open(unit=1,file="../laneEmbden.dat")
 
 read (1,*) imax
@@ -95,28 +95,40 @@ print *, imax
 nmin = nghost + 1
 nmax = imax + nghost
 
-n = nmin
 rlast = 0;
-5 read (1,*,end=10) radius, rho, pressure
- xa0(n) = (radius + rlast) / 2.0
- if (n-1.gt.0) then 
-   dx0(n-1) = xa(n)-xa(n-1)
- end if
- if (n.gt.nghost .and. n.le.nmax-nghost) then
-    print *, rho,pressure
-    r(n) = rho
-    p(n) = pressure
-    u(n) = 0.0            ! velocity is zero everywhere
-    v(n) = 0.0            ! note that we have to carry around the transverse
-    w(n) = 0.0            ! velocities even though this is a 1D code
-    f(n) = 0.0            ! set initial flattening to zero
-    rlast = radius
- end if
- n = n+1
-go to 5
+do n=nmin,nmax,1
+
+   read (1,*,end=10) radius, rho, pressure
+   print *, rho,pressure
+   if (n.eq.nmin) then
+      xa0(n) = 0
+   else
+      xa0(n) = (radius + rlast) / 2.0      
+   end if
+   r(n) = rho
+   p(n) = pressure
+   u(n) = 0.0            ! velocity is zero everywhere
+   v(n) = 0.0            ! note that we have to carry around the transverse
+   w(n) = 0.0            ! velocities even though this is a 1D code
+   f(n) = 0.0            ! set initial flattening to zero
+   rlast = radius
+
+   if (n-1.ge.nmin) then 
+      dx0(n-1) = xa0(n)-xa0(n-1)
+   end if
+
+end do
+xmin = 0
 dx0(nmax) = dx0(nmax-1)
+xmax = xa0(nmax) + dx0(nmax)
 
 10 close(1)
+
+if (imax .ne. nmax - nghost) then
+   print *, "ERROR - number of lines does not match the number at the head of the progenitor profile!"
+   print *, "file says: ", imax
+   print *, "nmax-2*nghost = ", nmax-nghost
+end if
 
 ! Set up parameters for the problem; in this case a Sedov Blast 
 gam    = 5.0/3.0   ! We always need a ratio of specific heats, gamma
