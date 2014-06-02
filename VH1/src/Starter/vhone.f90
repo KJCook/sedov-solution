@@ -79,7 +79,23 @@ write (8,*)
 sweep  = 'x'   ! default is x-sweep (only option for 1D)
 ngeom  = 2     ! Spherical Geom
 nleft  = 0     ! Reflecting at xmin
-nright = 1     ! Zero-gradient at xmax
+nright = 1     ! Reflecting at xmax
+
+! Create a grid of imax zones, making room for 6 'ghost zones' on each end
+
+imax = 1000           ! total number of real zones on grid
+nmin = 7             ! first real zone
+nmax = imax + 6      ! last real zone
+xmin = 0.            ! x value at left edge of grid
+xmax = 1.0           ! x value at right edge of grid
+
+! Initialize grid coordinates: xa0(n) is coordinate of left edge of zone n
+
+dxfac = (xmax - xmin) / float(imax)  ! width of each zone
+do n = nmin, nmax
+  xa0(n) = xmin + (n-nmin)*dxfac 
+  dx0(n) = dxfac
+enddo
 
 !============================================================
 ! INITIAL CONDITIONS AND GRID

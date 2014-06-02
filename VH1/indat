@@ -4,7 +4,7 @@
  ncycend = 50000
  ndump   = 500
  nprin   = 500
- nmovie  = 1000000
+ nmovie  = 10
  endtime = 9.9e+19
  tprin   = 9.9e+19
  tmovie  = 9.9e+19 /

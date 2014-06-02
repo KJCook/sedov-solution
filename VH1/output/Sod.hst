@@ -1,0 +1,26 @@
+ History File for VH-1 simulation run on 06 / 02 / 2014
+
+Oblique Sod shock tube in 2 dimensions.
+Grid dimensions:  100 x  100
+
+Ratio of specific heats = 1.667
+Pressure ratio is 0.100
+Density ratio is 0.125
+
+Wrote time slice to               Sod.nc at time = 0.00000E+00 (ncycle =      0)
+Wrote time slice to               Sod.nc at time = 2.00000E-02 (ncycle =      6)
+Wrote time slice to               Sod.nc at time = 4.00000E-02 (ncycle =     12)
+Wrote time slice to               Sod.nc at time = 6.00000E-02 (ncycle =     18)
+Wrote time slice to               Sod.nc at time = 8.00000E-02 (ncycle =     24)
+Wrote time slice to               Sod.nc at time = 1.00000E-01 (ncycle =     30)
+Wrote time slice to               Sod.nc at time = 1.20000E-01 (ncycle =     36)
+Wrote time slice to               Sod.nc at time = 1.40000E-01 (ncycle =     42)
+Wrote time slice to               Sod.nc at time = 1.60000E-01 (ncycle =     48)
+Wrote time slice to               Sod.nc at time = 1.80000E-01 (ncycle =     54)
+Wrote time slice to               Sod.nc at time = 2.00000E-01 (ncycle =     60)
+ cutting to the end...          64         100
+Wrote time slice to               Sod.nc at time = 2.10000E-01 (ncycle =     64)
+ Dumped Soddaa at cycle           64
+ successful stop at cycle number          64
+ elapsed time =    8.92988313E-03  minutes
+speed = ***** kz/s
