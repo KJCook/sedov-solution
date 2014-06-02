@@ -82,7 +82,7 @@ nright = 1     ! Reflecting at xmax
 
 ! Create a grid of imax zones, making room for 6 'ghost zones' on each end
 
-imax = 100           ! total number of real zones on grid
+imax = 1000           ! total number of real zones on grid
 nmin = 7             ! first real zone
 nmax = imax + 6      ! last real zone
 xmin = 0.            ! x value at left edge of grid

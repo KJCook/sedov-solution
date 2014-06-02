@@ -1,10 +1,10 @@
 &hinput
  rstrt   = 'no'
- prefix  = 'Sod'
- ncycend = 100
+ prefix  = 'sedov'
+ ncycend = 50000
  ndump   = 5000000
- nprin   = 10
+ nprin   = 500
  nmovie  = 10
- endtime = 2.1e-01
- tprin   = 2.0e-02
+ endtime = 9.9e+19
+ tprin   = 9.9e+19
  tmovie  = 9.9e+19 /

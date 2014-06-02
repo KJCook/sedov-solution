@@ -7,7 +7,7 @@ from matplotlib import animation
 
 # First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
-ax = plt.axes(xlim=(0.0, 1.0), ylim=(0, 5.0)) # change the axis limits here
+ax = plt.axes(xlim=(0.0, 1.0), ylim=(0, 10000.0)) # change the axis limits here
 line, = ax.plot([], [], lw=2)
 
 # initialization function: plot the background of each frame
@@ -26,7 +26,7 @@ def animate(i):
     for roak in fl: 
         broken = roak.strip().split()
         xr.append(float(broken[0])) # x column
-        yr.append(float(broken[1])) # y column 
+        yr.append(float(broken[2])) # y column 
  
 
     x=np.array(xr)
@@ -36,8 +36,9 @@ def animate(i):
     return line,
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
+# number of frames needs to be input.  Interval will determine the framerate
 anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=100, interval=50, blit=True)
+                               frames=100, interval=50, blit=True) 
 
 # save the animation as an mp4.  This requires ffmpeg or mencoder to be
 # installed.  The extra_args ensure that the x264 codec is used, so that
