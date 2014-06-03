@@ -111,7 +111,7 @@ dx0 = dx
 !#########################################################################
 
 ! remap onto original Eulerian grid
-!call remap
+call remap
 
 return
 end
