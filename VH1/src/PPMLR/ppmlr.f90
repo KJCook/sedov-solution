@@ -48,40 +48,70 @@ call riemann( nmin-3, nmax+4, gam, prgh, urgh, rrgh, plft, ulft, rlft, pmid, umi
 ! do lagrangian update using umid and pmid
 call evolve( umid, pmid )
 
+!This should take care of outputting in Lagrangian coordinates rather than Euler
+xa0 = xa
+dx0 = dx
+
+! This commented code here is from Raph.  He used this for an old version of
+! VH1-serial to do the Lagrangian remap.  The do-loop is used to realign the
+! lagrangian grid since the ghost cells are offset
+
+!  For a Lagrangian run, grid change requires updated parabolic coeff.
+!If(lagrangian)
+!&    call paraset(ntot,zparax,dx,xa,nmin-4,nmax+4,ngeomx)
+
+!  Evolve flow
+!call ppm    ( ngeomx, ntot, zparax )
+
+!  For a Lagrangian run, update the coordinates
+!If(lagrangian) Then
+!   do i = 1, imax
+!      n = i + 6
+!      zxa(i)=xa(n)
+!      zdx(i)=dx(n)
+!      zxc(i)=xc(n)
+!   Enddo
+   
+   !  For an Eulerian run, remap to the Eulerian grid
+!Else
+!   call remap  ( ngeomx )
+!Endif
+
+! commenting out wiggle for now, as well as other remaps back to Eulerian
 !#########################################################################
 ! EXTRA DISSIPATION TO REDUCE CARBUNCLE NOISE
-xwag = sum(flat)
-if (xwag*xwig /= 0.0) then ! wiggle grid, remap, then remap back to Eulerian grid
+!xwag = sum(flat)
+!if (xwag*xwig /= 0.0) then ! wiggle grid, remap, then remap back to Eulerian grid
 
  ! save Eulerian coordinates for second remap
- xaf = xa0
- dxf = dx0
+! xaf = xa0
+! dxf = dx0
 
  ! wiggle grid where there is a shock, leaving edges unchanged
- do n = nmin+1, nmax
-  if (max(flat(n-1),flat(n)) > 0.0) xa0(n) = xa0(n) + xwig*dx0(n)
-  dx0(n-1) = xa0(n) - xa0(n-1)
- enddo
- dx0(nmax) = xa0(nmax+1) - xa0(nmax)
+! do n = nmin+1, nmax
+!  if (max(flat(n-1),flat(n)) > 0.0) xa0(n) = xa0(n) + xwig*dx0(n)
+!  dx0(n-1) = xa0(n) - xa0(n-1)
+! enddo
+! dx0(nmax) = xa0(nmax+1) - xa0(nmax)
 
- call remap
+! call remap
 
  ! put wiggled grid into xa(n), but keep ghost cells untouched
- do n = nmin, nmax+1
-  xa(n)   = xa0(n)
-  dx(n-1) = xa(n) - xa(n-1)
- enddo
- call volume(nmin, nmax, ngeom, radius, xa, dx, dvol)
+! do n = nmin, nmax+1
+!  xa(n)   = xa0(n)
+!  dx(n-1) = xa(n) - xa(n-1)
+! enddo
+! call volume(nmin, nmax, ngeom, radius, xa, dx, dvol)
 
  ! put Eulerian grid back into xa0
- xa0 = xaf
- dx0 = dxf
+! xa0 = xaf
+! dx0 = dxf
 
-endif
+!endif
 !#########################################################################
 
 ! remap onto original Eulerian grid
-call remap
+!call remap
 
 return
 end
