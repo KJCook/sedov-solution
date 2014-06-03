@@ -1,0 +1,9 @@
+These files are to be plotted showing the relative differences between
+imax = 100 vs imax = 1000 and for eulerian vs lagrangian coordinates.
+A .ps file was included for a basic gnuplot of one possibility.
+
+Note, the physics is only approximately the same, since the times are not exact
+Wrote   EUL1000sedov1010 to disk at time = 1.00012E-02 (ncycle =  35683)
+Wrote    EUL100sedov1010 to disk at time = 1.01035E-02 (ncycle =    442)
+Wrote   LAG1000sedov1010 to disk at time = 1.00397E-02 (ncycle =   2423)
+Wrote    LAG100sedov1010 to disk at time = 1.04757E-02 (ncycle =    143)
