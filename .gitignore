@@ -1,5 +1,5 @@
 *.o
 *~
 *vh1-starter
-VH1/output/*
+VH1/output/*.dat
 *#*#

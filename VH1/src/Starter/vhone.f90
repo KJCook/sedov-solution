@@ -128,10 +128,9 @@ end do
 ! Set up parameters for the problem; in this case a Sedov Blast 
 gam    = 5.0/3.0   ! We always need a ratio of specific heats, gamma
 gamm   = gam - 1.0 
-Eblast = 1.0e51   ! initial Energy of the blast
+Eblast = 1.0e3   ! initial Energy of the blast. 10^51 erg
 volume = 4./3.*pi * xa0(nmin+1)**3
-p(nmin) = 1.0e6
-!p(nmin) = 1./3. * Eblast/volume
+p(nmin) = 1./3. * Eblast/volume
 
 xmin = 0
 dx0(nmax) = dx0(nmax-1)
