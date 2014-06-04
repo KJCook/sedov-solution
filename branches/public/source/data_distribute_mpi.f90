@@ -110,7 +110,8 @@ Subroutine control_bcast(data_dir)
     Read(lun_control,"(72x)")
     Read(lun_control,"(a80)") bin_file_base            
     Read(lun_control,"(72x)")
-    Read(lun_control,"(14a5)") output_nuc         
+    !Read(lun_control,"(14a5)") output_nuc
+    Read(lun_control, "(20a5)") output_nuc
 
 !-------------------------------------------------------------------------------
 ! XNet input controls include the relative directory from which the nuclear data 

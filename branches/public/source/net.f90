@@ -29,14 +29,14 @@ Program net
 ! Use neutrino_data                                                     !NNU
 !$ Use omp_lib
   Integer :: i,j,k,n,nz,izone! Loop indices
-  Integer :: kstep,ii(14),ierr,index,lun_control
+  Integer :: kstep,ii(20),ierr,index,lun_control
   Integer :: nstart,kstart
   Real(8) :: tdelstart,t9start,rhostart
   Integer, Parameter :: nzmx=100
   Real(8), Dimension(:), Allocatable :: yin
 ! Real(8) :: yestart,dt,rdt,dye                                         !NSE
   Real(8), Dimension(:), Allocatable, Save :: dyf,flx_diff
-  Character (LEN=5)  :: output_nuc(14)
+  Character (LEN=5)  :: output_nuc(150)
   Character (LEN=80) :: descript(3),data_desc
   Character (LEN=80) :: data_dir,thermo_file(nzmx),inab_file(nzmx)
   Character (LEN=80) :: ev_file_base,bin_file_base,diag_file_base='net_diag'
@@ -122,7 +122,7 @@ Program net
   Read(lun_control,"(72x)")
   Read(lun_control,"(a80)") bin_file_base            
   Read(lun_control,"(72x)")
-  Read(lun_control,"(14a5)") output_nuc         
+  Read(lun_control,"(150a5)") output_nuc         
 
 !-------------------------------------------------------------------------------
 ! XNet input controls include the relative directory from which the nuclear data 
@@ -195,7 +195,7 @@ Program net
   If(iscrn>0) call eos_initialize
   
 ! Convert output_nuc names into indices
-  Do i=1,14
+  Do i=1,150
     Call index_from_name(output_nuc(i),index)
     If(index<1.or.index>ny) Then
       Write(6,*) 'Output Nuc:',i,output_nuc(i),' not found'
@@ -347,8 +347,8 @@ Program net
       If(idiag>=0) Write(lun_diag,"(a,i5,7es10.3)") trim(ev_file),&
 &       nh,th(nh),t9h(nh),rhoh(nh),tstart,tstop
       Open(lun_ev,file=ev_file)
-      ii=(/5,21,29,36,43,53,63,73,89,102,115,117,129,144/)
-      Write(lun_ev,"(a4,a15,4a10,15a9,a4)") &
+      ii=(/5,21,29,36,43,53,63,73,89,102,115,117,129,144,154,164,174,184,194,204/)
+      Write(lun_ev,"(a4,a15,4a10,150a9,a4)") &
 &       'k ',' Time ',' T(GK) ',' Density ',' dE/dt ',' Timestep ',nname(inout), ' It '
     EndIf
   
@@ -462,7 +462,7 @@ Subroutine ts_output(kstep,enuc,edot)
 !   Write(lun_ev,"(i4,1es15.8,2es10.3,2es10.2,8es9.2,i4)") &
 !&     kstep,t,t9t,rhot,edot,enuc,tdel,(xg(i),i=1,7),kout
 !   ii=(/6,21,33,45,61,77,95,115,139,162,184,206,231,257/)
-    Write(lun_ev,"(i4,1es15.8,2es10.3,2es10.2,14es9.2,2i2)") &
+    Write(lun_ev,"(i4,1es15.8,2es10.3,2es10.2,150es9.2,2i2)") &
 &     kstep,t,t9t,rhot,edot,tdel,(aa(inout)*yout(inout)),kmon
 !  Write(lun_ev,"(i4,1es15.8,2es10.3,2es10.2,14es9.2,i4)") kstep,t,t9t,rhot,edot,tdel,(aa*y),kout
   
@@ -470,7 +470,7 @@ Subroutine ts_output(kstep,enuc,edot)
     If(itsout>=3) Write(6,"(i5,4es12.4,2i3)") kstep,t,tdel,t9t,rhot,kmon
   
 ! For itsout>=4, output abundances for each timestep to the diagnostic file
-    If(itsout>=4) Write(lun_diag,"(4(a5,es14.7,1x))") (nname(i),aa(i)*y(i),i=1,ny)
+    If(itsout>=4) Write(lun_diag,"(4(a5,es150.7,1x))") (nname(i),aa(i)*y(i),i=1,ny)
   
 ! For itsout>=5, output fluxes for each timestep to the diagnostic file
     If(itsout>=5) Write(lun_diag,'(i5,8a5,i5,es11.3)') &
