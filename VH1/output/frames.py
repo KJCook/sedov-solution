@@ -1,33 +1,20 @@
 import numpy as np
 
-fo = open("zone1.dat", "w")
+def rho_cgs(rho_code, P_code):
+    Msun = 1.99e33;
+    Rsun = 6.96e10;
+    return rho_code * Msun / Rsun**3;
 
-fo.write('Flat Profile at 2.5 GK \n');
-fo.write('Blah Blah        Start Time\n');
-fo.write('Beep Boop        Stop Time \n');
-fo.write('Borp Blep        Init Del t\n');
+def T_GK(rho_code, P_code):
+    kb = 1.380658e-16;
+    mu = 0.5;
+    mH = 1.6733e-24;
+    Msun = 1.99e33;
+    Rsun = 6.96e10;
+    P = P_code * Msun/Rsun;
+    rho = rho_cgs(rho_code, P_code);
+    T = mu*mH/kb * P/rho;
+    return 1.0e-9 * T;
 
-targetzone = 30
-
-lastframe = 45
-for i in range (0,lastframe+1):
-    k = str(i)   
-    k = (3-len(k))*'0'+k 
-    print "k: ", k
-    fl = open('LAG1000sedov1'+k+'.dat','r') #file name here   
-    xr =[] 
-    yr =[]
-    i = 0
-    for roak in fl:        
-        broken = roak.strip().split()
-        xr.append(float(broken[0])) # x column
-        yr.append(float(broken[1])) # y column 
-        if (i == targetzone-1):
-            fo.write('time: ' + broken[0] + ' density: ' + broken[1] + ' pressure: ' + broken[2] + '\n');
-            x=np.array(xr)
-            y=np.array(yr)
-
-        i=i+1
-
-
-
+print rho_cgs(5.92028E+08,8.54297E+06)
+print T_GK(5.92028E+08,8.54297E+06)
