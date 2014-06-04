@@ -1,6 +1,24 @@
 import numpy as np
 
+fhist = open('LAG1000sedov.hst','r') #file name here   
+i=0
+time = []
+time.append(0)
+
+
+for line in fhist:
+    if(i > 6):
+        print line,
+        time = line.strip().split()
+        individualtime = float(time[7])
+        print individualtime
+        time.append(individualtime)
+    i=i+1
+    
+t = np.array(time)
 fo = open("zone1.dat", "w")
+
+print 'TIME! ' , time
 
 fo.write('Flat Profile at 2.5 GK \n');
 fo.write('Blah Blah        Start Time\n');
@@ -23,7 +41,7 @@ for i in range (0,lastframe+1):
         xr.append(float(broken[0])) # x column
         yr.append(float(broken[1])) # y column 
         if (i == targetzone-1):
-            fo.write('time: ' + broken[0] + ' density: ' + broken[1] + ' pressure: ' + broken[2] + '\n');
+            fo.write('time: ' + broken[0] + ' temp: ' + broken[1] + ' density: ' + broken[2] + '\n');
             x=np.array(xr)
             y=np.array(yr)
 
@@ -31,3 +49,6 @@ for i in range (0,lastframe+1):
 
 
 
+fhist.close()
+fo.close()
+fl.close()
