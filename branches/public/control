@@ -32,6 +32,6 @@ tso
 # Nuclear Data Directory
 Data150
 # Initial Abundance and Thermodynamic Trajectory Files
-Data150/ab_he
-th_constant
+Data150/ab_hydrogen
+th_zone1
 
