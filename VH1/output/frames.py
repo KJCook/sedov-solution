@@ -1,5 +1,21 @@
 import numpy as np
 
+def rho_cgs(rho_code, P_code):
+    Msun = 1.99e33;
+    Rsun = 6.96e10;
+    return rho_code * Msun / Rsun**3;
+
+def T_GK(rho_code, P_code):
+    kb = 1.380658e-16;
+    mu = 0.5;
+    mH = 1.6733e-24;
+    Msun = 1.99e33;
+    Rsun = 6.96e10;
+    P = P_code * Msun/Rsun;
+    rho = rho_cgs(rho_code, P_code);
+    T = mu*mH/kb * P/rho;
+    return 1.0e-9 * T;
+
 fhist = open('LAG1000sedov.hst','r') #file name here   
 i=0
 time = []
