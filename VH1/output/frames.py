@@ -12,13 +12,14 @@ for line in fhist:
         time = line.strip().split()
         individualtime = float(time[7])
         print individualtime
-        time.append(individualtime)
+        time.append(float(time[7]))
+        t = np.array(time)
     i=i+1
     
-t = np.array(time)
+
 fo = open("zone1.dat", "w")
 
-print 'TIME! ' , time
+print 'TIME! ' , t
 
 fo.write('Flat Profile at 2.5 GK \n');
 fo.write('Blah Blah        Start Time\n');
