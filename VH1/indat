@@ -1,9 +1,9 @@
 &hinput
  rstrt   = 'no'
- prefix  = 'supernova'
- ncycend = 50000
- ndump   = 500
- nprin   = 500
+ prefix  = 'asdf'
+ ncycend = 10000
+ ndump   = 10000
+ nprin   = 100
  nmovie  = 10
  endtime = 9.9e+19
  tprin   = 9.9e+19

@@ -11,7 +11,7 @@ VPATH = ../PPMLR
 #  the following is set for gfortran compiler  http://gcc.gnu.org/wiki/GFortran
 #
 F90 = gfortran 
-FFLAGS = -c 
+FFLAGS = -c -fdefault-real-8
 LDR=	gfortran              
 LDRFLAGS=              
 LIBS=  
