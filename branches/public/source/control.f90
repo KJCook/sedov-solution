@@ -40,7 +40,7 @@ Module controls
   Integer :: idiag        ! Sets level of diagnostic output
   Integer :: itsout       ! Sets level of time series output
   Integer :: lun_diag, lun_ev, lun_ts, lun_th, lun_ab ! logical units
-  Integer :: inout(14)    ! List of species to output in condensed form
+  Integer :: inout(150)    ! List of species to output in condensed form
 
 ! Job indentifiers
   Integer :: myid, nproc, mythread, nthread ! task & thread ids and counts
