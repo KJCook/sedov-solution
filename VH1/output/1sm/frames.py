@@ -33,7 +33,7 @@ for line in fhist:
         t = np.array(time)
     i=i+1
     
-fo = open("zone1.dat", "w")
+fo = open("1smZone225.dat", "w")
 
 
 
@@ -42,7 +42,7 @@ fo.write('0.0        Start Time\n');
 fo.write(str(time[lastframe]) + '        Stop Time \n');
 fo.write(str(time[1]) + '        Init Del t\n');
 
-targetzone = 30
+targetzone = 225
 
 
 j=0
