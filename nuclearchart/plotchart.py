@@ -11,7 +11,7 @@ import matplotlib.animation as animation
 #Set up the chart. Import the A,Z,N of known nuclei
 
 chart = np.genfromtxt('zna.dat',delimiter=" ", dtype = float) 
-
+stable = np.genfromtxt('Stable_Nuclides.txt',delimiter=" ",dtype=float)
 Abig = [row[0] for row in chart]
 Zbig = [row[1] for row in chart]
 Nbig = [row[2] for row in chart]
@@ -20,7 +20,11 @@ Abig = np.asarray(Abig)
 Zbig = np.asarray(Zbig)
 Nbig = np.asarray(Nbig) 
 
+Astable = np.asarray([row[0] for row in stable]) 
+Zstable =  np.asarray([row[1] for row in stable]) 
+Nstable = Astable - Zstable 
 
+#print Nstable 
 #Import 150 isotopes from netwinv 
 
 #with open('netwinv') as fin, open('output','w') as fout: 
@@ -37,39 +41,19 @@ Nnetwork = [row[3] for row in network]
 
 #Import the data from XNet ev1 outputs
 
-data = np.genfromtxt('ev1.dat', dtype = float) 
-
-#print type(data)
-#print data[1][1]
-#step = [row[0] for row in data]
-#t = [row[1] for row in data]
-#He4 = [row[6] for row in data]
-#C12 = [row[7] for row in data]
-#O16 = [row[8] for row in data]
-#Ne20 = [row[9] for row in data]
-#Mg24 = [row[10] for row in data]
-#Si28 = [row[11] for row in data]
-#S32 = [row[12] for row in data]
-#Ar36 = [row[13] for row in data]
-#Ca40 = [row[14] for row in data]
-#Ti44 = [row[15] for row in data]
-#Cr48 = [row[16] for row in data]
-#Fe52 = [row[17] for row in data]
-#Ni56 = [row[16] for row in data]
-#Zn60 = [row[17] for row in data]
+data = np.genfromtxt('ev150np1.dat', dtype = float) 
 
 abundance=[]
 for i in range (6,156):
     a = [row[i] for row in data]
     abundance.append(a) 
 
+time = []
+time = [row[1] for row in data]
+
 print type(abundance)
 
 color_data = np.asarray(abundance) 
-
-#print color_data[1]
-#print type(color_data)
-#print color_data.shape
 
 #transpose the graph
 
@@ -77,35 +61,47 @@ color_data = np.asarray(abundance)
 color_data=np.transpose(color_data) 
 #print type(color_data)
 color_data = np.asarray(color_data) 
+
+#Make it log
 color_data=color_data+0.000000000000000000000000000000001
 color_data = np.log10(color_data)
-#print color_data.shape
 
-
-#Make an array holding Z,N,t and the above abundances
-#Do this for 16O first
-#Z=[2,6,8,10,12,14,16,18,20,22,24,26,28,30]
-#N=[2,6,8,10,12,14,16,18,20,22,24,26,28,30]
-
-#color_data = zip(He4,C12,O16,Ne20,Mg24,Si28,S32,Ar36,Ca40,Ti44,Cr48,Fe52,Ni56,Zn60) 
-#color_data = np.asarray(color_data)
 
 #---------Plotting begins here------
 
 #Plot a white set of boxes
 fig = plt.figure()
 ax = fig.add_subplot(111) 
-big=ax.scatter(Zbig,Nbig,c='w',marker='s', s=100)
-scatt = ax.scatter(Znetwork,Nnetwork,c='w',marker ='s', s=100)
+big=ax.scatter(Nbig,Zbig,c='w',marker='s', s=40)
+#big1=ax.scatter(Nbig,Nbig)
+#initialise animation 
+scatt = ax.scatter(Nnetwork,Znetwork,c='w',marker ='s', s=40)
+#ax.text(0,25,'time')
+ax.set_xlabel("Number of Neutrons",fontsize=12)
+ax.set_ylabel("Number of Protons",fontsize=12)
+ax.set_xlim(-2,40)
+ax.set_ylim(-2,31)
 
-ax.set_xlim(-2,35)
-ax.set_ylim(-2,45)
+
 
 def update_plot(i, data, scatt):
     scatt.set_array(data[i])
     return scatt,
 
 ani=animation.FuncAnimation(fig,update_plot,frames=len(color_data), interval=1, fargs=(color_data,scatt))
+
+
+cbar = plt.colorbar(scatt)
+
+stablep=ax.scatter(Nstable,Zstable,c='k',marker='x', s=20)
+cbar.set_label('Log10(Abundance)', rotation=270)
+
+# save the animation as an mp4.  This requires ffmpeg or mencoder to be
+# installed.  The extra_args ensure that the x264 codec is used, so that
+# the video can be embedded in html5.  You may need to adjust this for
+# your system: for more information, see
+# http://matplotlib.sourceforge.net/api/animation_api.html
+ani.save('np150chart.mp4', fps=70, extra_args=['-vcodec', 'libx264'])
 
 
 plt.show()
