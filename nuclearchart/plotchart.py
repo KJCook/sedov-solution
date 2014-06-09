@@ -1,6 +1,6 @@
 #A python script for plotting abundances on the nuclear chart as a function of time
-#KJC 2/6/2014
-
+#C Kaitlin Jennifer Cook 2/6/2014
+#Feel free to share and edit. Attribution is good for the soul. 
 
 import numpy as np 
 import matplotlib.pyplot as plt
